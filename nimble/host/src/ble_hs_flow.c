@@ -20,6 +20,11 @@
 #include "syscfg/syscfg.h"
 #include "ble_hs_priv.h"
 
+int ble_hci_trans_set_acl_free_cb(os_mempool_put_fn *cb, void *arg) {
+    return BLE_ERR_UNSUPPORTED; // Temporary workaround
+}
+
+
 #if MYNEWT_VAL(BLE_HS_FLOW_CTRL)
 
 #define BLE_HS_FLOW_ITVL_TICKS  \
@@ -266,7 +271,7 @@ ble_hs_flow_startup(void)
     /* Flow control successfully enabled. */
     ble_hs_flow_num_completed_pkts = 0;
 #if SOC_ESP_NIMBLE_CONTROLLER && CONFIG_BT_CONTROLLER_ENABLED
-    ble_hci_trans_set_acl_free_cb(ble_hs_flow_acl_free, NULL);
+ble_hci_trans_set_acl_free_cb(ble_hs_flow_acl_free, NULL);
 #else
     ble_transport_register_put_acl_from_ll_cb(ble_hs_flow_acl_free);
 #endif
